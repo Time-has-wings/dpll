@@ -1,11 +1,5 @@
 #include "sudoku.h"
 
-void RANDOM() {
-#ifdef NEEDRANDOM
-    srand(time(0));
-#endif
-}
-
 static void myShuffle(int* arr, int count) {
     for (int i = 0; i < count; i++) {
         int idx = rand() % count;
@@ -13,7 +7,7 @@ static void myShuffle(int* arr, int count) {
     }
 }
 
-static int belongGrid(int x, int y) {
+static inline int belongGrid(int x, int y) {
     return x / 3 * 3 + y / 3;
 }
 
@@ -43,16 +37,6 @@ static void resetNumber(SUDOKU& sudoku, int x, int y, int num, bool row[][9], bo
     if (x == y) diag[num - 1] = false;
 }
 
-void printSudoku(SUDOKU& sudoku) {
-    std::cout << "==========================================" << std::endl;
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            std::cout << sudoku.sudoku[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
 static void generateSudoku(SUDOKU& sudoku, int x, int y, bool row[][9], bool col[][9], bool grid[][9], bool diag[]) {
     if (sudoku.generated == true) return;
     if (x == 9) sudoku.generated = true;
@@ -70,17 +54,6 @@ static void generateSudoku(SUDOKU& sudoku, int x, int y, bool row[][9], bool col
     }
 }
 
-SUDOKU createSudoku() {
-    SUDOKU sudoku{};
-    bool row[9][9], col[9][9], grid[9][9], diag[9];
-    memset(row, false, sizeof(row));
-    memset(col, false, sizeof(col));
-    memset(grid, false, sizeof(grid));
-    memset(diag, false, sizeof(diag));
-    generateSudoku(sudoku, 0, 0, row, col, grid, diag);
-    return sudoku;
-}
-
 static void solveSudoku(SUDOKU& sudoku, int x, int y, bool row[][9], bool col[][9], bool grid[][9], bool diag[]) {
     if (x == 9) sudoku.solution_count++;
     else if (y == 9) solveSudoku(sudoku, x + 1, 0, row, col, grid, diag);
@@ -93,6 +66,33 @@ static void solveSudoku(SUDOKU& sudoku, int x, int y, bool row[][9], bool col[][
             solveSudoku(sudoku, x, y + 1, row, col, grid, diag);
             resetNumber(sudoku, x, y, arr[i], row, col, grid, diag);
         }
+    }
+}
+
+void RANDOM() {
+#ifdef NEEDRANDOM
+    srand(time(0));
+#endif
+}
+
+SUDOKU createSudoku() {
+    SUDOKU sudoku{};
+    bool row[9][9], col[9][9], grid[9][9], diag[9];
+    memset(row, false, sizeof(row));
+    memset(col, false, sizeof(col));
+    memset(grid, false, sizeof(grid));
+    memset(diag, false, sizeof(diag));
+    generateSudoku(sudoku, 0, 0, row, col, grid, diag);
+    return sudoku;
+}
+
+void printSudoku(SUDOKU& sudoku) {
+    std::cout << "==========================================" << std::endl;
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            std::cout << sudoku.sudoku[i][j] << " ";
+        }
+        std::cout << std::endl;
     }
 }
 
