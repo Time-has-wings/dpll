@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(sudoku)
+set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 include_directories(include)
@@ -10,3 +11,5 @@ add_executable(main main.cpp ${SRC_FILES})
 add_executable(sudoku-test test/sudoku-test.cpp ${SRC_FILES})
 add_executable(dpll-test test/dpll-test.cpp ${SRC_FILES} )
 add_executable(dpll-optimize-test test/dpll-optimize-test.cpp ${SRC_FILES})
+add_executable(dpll-pointer-test test/dpll-pointer-test.cpp ${SRC_FILES})
+add_executable(analyse test/analyse.cpp ${SRC_FILES})

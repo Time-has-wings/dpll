@@ -297,8 +297,13 @@ struct INFO {
     }
 
     int chooseVar() const {
-        for (int i = 1; i <= bool_var_count; i++) {
-            if (assign[i] == 0) return i;
+        // for (int i = 1; i <= bool_var_count; i++) {
+        //     if (assign[i] == 0) return i;
+        // }
+        for (int i = 1; i <= clause_count; i++) {
+            if (exist[i]) {
+                return clause[i].idx[0];
+            }
         }
         return 0;
     }
